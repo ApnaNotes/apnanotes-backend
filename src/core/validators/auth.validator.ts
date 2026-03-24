@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const registerInput = z.object({
     email: z.string().email('Invalid email format'),
     username: z.string().min(3, 'Invalid username format'),
+    name: z.string().min(3, 'Invalid name format'),
     password: z.string().min(4, 'Invalid password')
 });
 

@@ -1,6 +1,7 @@
 import { urlencoded } from 'express';
 import express from 'express';
 import cors from 'cors';
+import authRoute from './core/module/auth/auth.route';
 
 export const app = express();
 
@@ -30,3 +31,12 @@ app.use(
         allowedHeaders: ['Content-Type', 'Authorization']
     })
 );
+
+app.use('/api', authRoute);
+
+app.get('/health', (req, res) => {
+    res.json({
+        message: 'Running'
+    });
+});
+// test api for local env
