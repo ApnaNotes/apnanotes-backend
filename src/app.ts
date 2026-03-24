@@ -7,7 +7,12 @@ export const app = express();
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
-const allowedOrigins = ['http://localhost:5173'];
+const LOCAL_ENVOIRMENT_FRONTEND_URL = process.env.LOCAL_ENV_URL;
+const PRODUCTION_ENVOIRMENT_FRONTEND_URL = process.env.PRODUCTION_WEB_URL;
+const allowedOrigins = [
+    LOCAL_ENVOIRMENT_FRONTEND_URL,
+    PRODUCTION_ENVOIRMENT_FRONTEND_URL
+];
 
 app.use(
     cors({
