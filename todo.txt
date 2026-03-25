@@ -1,0 +1,4 @@
+- make the verification route and get token from url parameter -- done
+- login module -- done
+- password reset
+- google oauth

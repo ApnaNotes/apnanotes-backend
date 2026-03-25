@@ -2,6 +2,7 @@ import { prisma } from '../../../config/prisma';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { sendVerificationEmail } from '../../helpers/services/sendVerificationEmail';
+import { Response } from 'express';
 
 export async function initUser(
     email: string,
@@ -38,4 +39,18 @@ export async function initUser(
         console.error('Error creating user:', error);
         throw new Error('Failed to create user');
     }
+}
+
+export async function retrieveUser(email: string, password: string) {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+        // console.error('User not found');
+        return console.error('User not found');
+    }
+
+    const decodePass = await bcrypt.compare(password, user.passwordHash);
+    if (!decodePass) {
+        throw new Error('Invalid Credentials');
+    }
+    return user;
 }
