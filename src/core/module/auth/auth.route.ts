@@ -13,6 +13,10 @@ router.post('/register', registerUser);
  */
 router.post('/login', loginUser);
 
-router.post('/verification', verifyUser);
+/*
+ * POST Api for resetting user account password from the database
+ */
+
+// router.post('/password-reset', );
 
 export default router;
