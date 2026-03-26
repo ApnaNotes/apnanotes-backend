@@ -120,6 +120,14 @@ export async function verifyUser(req: Request, res: Response) {
     }
 }
 
+export async function genResetToken(req: Request, res: Response) {
+    const { userEmail } = req.body;
+
+    if (!userEmail) {
+        return res.status(400).json({ error: 'A Email is required' });
+    }
+}
+
 export async function resetUserPassword(req: Request, res: Response) {
     const { passwordResetToken } = req.body;
 

@@ -54,3 +54,28 @@ export async function retrieveUser(email: string, password: string) {
     }
     return user;
 }
+
+export async function generateResetToken(email: string) {
+    const findUserByEmail = await prisma.user.findUnique({
+        where: { email }
+    });
+
+    if (!findUserByEmail) {
+        return console.error('User not found');
+    }
+
+    const generateToken = crypto.randomBytes(32).toString('hex');
+
+    try {
+        prisma.user.update({
+            where: { email },
+            data: {
+                verificationToken: generateToken,
+                passResetTokenExpiry: new Date(Date.now() + 3600000)
+            }
+        });
+    } catch (error) {
+        console.error('Error generating password reset link:', error);
+        throw new Error('Failed to generate reset link');
+    }
+}

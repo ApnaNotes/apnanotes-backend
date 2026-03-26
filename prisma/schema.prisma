@@ -21,4 +21,7 @@ model User {
   createdAt DateTime @default(now())
   isVerified Boolean  @default(false)
   verificationToken String? 
+
+  passwordResetToken String? @unique
+  passResetTokenExpiry DateTime? 
 }
