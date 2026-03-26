@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { sendVerificationEmail } from '../../helpers/services/sendVerificationEmail';
 import { Response } from 'express';
+import { sendResetPassLinkEmail } from '../../helpers/services/sendPassResetEmail';
 
 export async function initUser(
     email: string,
@@ -74,8 +75,12 @@ export async function generateResetToken(email: string) {
                 passResetTokenExpiry: new Date(Date.now() + 3600000)
             }
         });
+
+        await sendResetPassLinkEmail(email, generateToken).catch((err) => {
+            console.error('Failed to send reset pass email:', err);
+        });
+        return 'Email Sent';
     } catch (error) {
         console.error('Error generating password reset link:', error);
-        throw new Error('Failed to generate reset link');
     }
 }

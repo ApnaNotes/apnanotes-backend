@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { loginInput, registerInput } from '../../validators/auth.validator';
-import { initUser, retrieveUser } from './auth.service';
+import { generateResetToken, initUser, retrieveUser } from './auth.service';
 import { checkUserVerified } from '../../helpers/services/isUserVerifiedService';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../../../config/prisma';
@@ -125,6 +125,14 @@ export async function genResetToken(req: Request, res: Response) {
 
     if (!userEmail) {
         return res.status(400).json({ error: 'A Email is required' });
+    }
+    try {
+        const resetEmail = await generateResetToken(userEmail);
+        return res.status(200).json({
+            message: 'Password reset email sent, Check your inbox'
+        });
+    } catch (err: any) {
+        return res.status(500).json({ error: 'Verification failed' });
     }
 }
 

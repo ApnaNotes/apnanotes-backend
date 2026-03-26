@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { loginUser, registerUser, verifyUser } from './auth.controller';
+import {
+    genResetToken,
+    loginUser,
+    registerUser,
+    verifyUser
+} from './auth.controller';
 
 const router = Router();
 
@@ -17,6 +22,8 @@ router.post('/login', loginUser);
  * POST Api for resetting user account password from the database
  */
 
-// router.post('/password-reset', );
+router.post('/genresettoken', genResetToken);
+
+// router.post('/resetpass', );
 
 export default router;
