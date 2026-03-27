@@ -3,6 +3,7 @@ import {
     genResetToken,
     loginUser,
     registerUser,
+    resetUserPassword,
     verifyUser
 } from './auth.controller';
 
@@ -24,6 +25,6 @@ router.post('/login', loginUser);
 
 router.post('/genresettoken', genResetToken);
 
-// router.post('/resetpass', );
+router.post('/resetpass', resetUserPassword);
 
 export default router;

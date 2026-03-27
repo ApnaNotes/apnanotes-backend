@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { loginInput, registerInput } from '../../validators/auth.validator';
-import { generateResetToken, initUser, retrieveUser } from './auth.service';
+import {
+    generateResetToken,
+    initUser,
+    resetUserPass,
+    retrieveUser
+} from './auth.service';
 import { checkUserVerified } from '../../helpers/services/isUserVerifiedService';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../../../config/prisma';
@@ -127,7 +132,7 @@ export async function genResetToken(req: Request, res: Response) {
         return res.status(400).json({ error: 'A Email is required' });
     }
     try {
-        const resetEmail = await generateResetToken(userEmail);
+        await generateResetToken(userEmail);
         return res.status(200).json({
             message: 'Password reset email sent, Check your inbox'
         });
@@ -137,9 +142,22 @@ export async function genResetToken(req: Request, res: Response) {
 }
 
 export async function resetUserPassword(req: Request, res: Response) {
-    const { passwordResetToken } = req.body;
+    const { passwordResetToken, newPass } = req.body;
 
     if (!passwordResetToken) {
         return res.status(400).json({ error: 'Reset token is required' });
+    }
+    if (!newPass) {
+        return res.status(400).json({ error: 'new pass is required' });
+    }
+
+    try {
+        await resetUserPass(passwordResetToken, newPass);
+
+        res.status(200).json({
+            message: 'Password Resetted successfully!'
+        });
+    } catch (err: any) {
+        return res.status(500).json({ error: 'Verification failed' });
     }
 }
