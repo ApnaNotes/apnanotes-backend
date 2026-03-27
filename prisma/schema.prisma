@@ -26,4 +26,5 @@ model User {
   passResetTokenExpiry DateTime? 
 
   googleId String? @unique
+  @@index([googleId])
 }
