@@ -6,6 +6,7 @@ import {
     resetUserPassword,
     verifyUser
 } from './auth.controller';
+import { googleLoginProvider } from './googleProvider';
 
 const router = Router();
 
@@ -23,8 +24,12 @@ router.post('/login', loginUser);
  * POST Api for resetting user account password from the database
  */
 
-router.post('/genresettoken', genResetToken);
+router.post('/pass/reset', resetUserPassword);
+router.post('/pass/reset/token', genResetToken);
 
-router.post('/resetpass', resetUserPassword);
+/*
+ * POST Api to login from google oAuth Provider
+ */
 
+router.get('/google/callback', googleLoginProvider);
 export default router;

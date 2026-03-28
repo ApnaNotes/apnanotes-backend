@@ -80,7 +80,8 @@ export const UserScalarFieldEnum = {
   isVerified: 'isVerified',
   verificationToken: 'verificationToken',
   passwordResetToken: 'passwordResetToken',
-  passResetTokenExpiry: 'passResetTokenExpiry'
+  passResetTokenExpiry: 'passResetTokenExpiry',
+  googleId: 'googleId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

@@ -49,6 +49,12 @@ export async function retrieveUser(email: string, password: string) {
         return console.error('User not found');
     }
 
+    if (!user.passwordHash) {
+        throw new Error(
+            'This account uses Google Sign-In. Please log in with Google.'
+        );
+    }
+
     const decodePass = await bcrypt.compare(password, user.passwordHash);
     if (!decodePass) {
         throw new Error('Invalid Credentials');
@@ -64,7 +70,7 @@ export async function generateResetToken(email: string) {
 
         if (!findUserByEmail) {
             console.error('User not found');
-            return null; // Return null instead of console.error
+            return null;
         }
 
         const generateToken = crypto.randomBytes(32).toString('hex');
@@ -81,36 +87,32 @@ export async function generateResetToken(email: string) {
         return 'Email Sent';
     } catch (error) {
         console.error('Error generating password reset link:', error);
-        throw error; // Throw error to be handled by caller
+        throw error;
     }
 }
 
 export async function resetUserPass(token: string, password: string) {
     try {
-        // Find user with valid token (non-expired)
         const user = await prisma.user.findFirst({
             where: {
                 passwordResetToken: token,
                 passResetTokenExpiry: {
-                    gt: new Date() // Check if token is not expired
+                    gt: new Date() // check if token is not expired
                 }
             }
         });
 
-        // If no user found with valid token, throw error
         if (!user) {
             throw new Error('Invalid or expired token');
         }
 
-        // Hash the new password
         const hashPass = await bcrypt.hash(password, 10);
 
-        // Update user: clear reset token and set new password
         await prisma.user.update({
-            where: { id: user.id }, // Use id instead of token for more reliable update
+            where: { id: user.id },
             data: {
                 passwordResetToken: null,
-                passResetTokenExpiry: null, // Also clear the expiry
+                passResetTokenExpiry: null,
                 passwordHash: hashPass
             }
         });
