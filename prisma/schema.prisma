@@ -29,5 +29,18 @@ model User {
 
   googleId String? @unique
   @@index([googleId])
+
+  profile Profile?
 }
 
+model Profile {
+  id Int @id @default(autoincrement())
+  
+  bio String?
+  avatar String?
+  
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
