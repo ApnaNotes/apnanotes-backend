@@ -25,7 +25,7 @@ model User {
   passwordResetToken String? @unique
   passResetTokenExpiry DateTime? 
   
-  discountCode String? 
+  referralCode String? 
 
   googleId String? @unique
   @@index([googleId])
