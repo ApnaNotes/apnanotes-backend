@@ -12,6 +12,11 @@ import { prisma } from '../../../config/prisma';
 import { sendWelcomeEmail } from '../../helpers/services/sendWelcomeEmail';
 import { success } from 'zod';
 
+
+/*
+ * register user function
+ */
+
 export async function registerUser(req: Request, res: Response) {
     try {
         const data = registerInput.safeParse(req.body); // validates the data coming from frontend
