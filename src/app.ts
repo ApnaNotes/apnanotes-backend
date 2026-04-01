@@ -2,6 +2,7 @@ import { urlencoded } from 'express';
 import express from 'express';
 import cors from 'cors';
 import authRoute from './core/module/auth/auth.route';
+import profileRoute from './core/module/profile/profile.route';
 
 export const app = express();
 
@@ -33,7 +34,7 @@ app.use(
 );
 
 app.use('/api', authRoute);
-
+app.use('/api', profileRoute);
 app.get('/health', (req, res) => {
     res.json({
         message: 'Running'
